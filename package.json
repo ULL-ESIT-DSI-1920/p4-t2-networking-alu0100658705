@@ -1,0 +1,23 @@
+{
+  "name": "networking",
+  "version": "1.0.0",
+  "description": "",
+  "main": "conexion.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ULL-ESIT-DSI-1920/p4-t2-networking-alu0100658705.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ULL-ESIT-DSI-1920/p4-t2-networking-alu0100658705/issues"
+  },
+  "homepage": "https://github.com/ULL-ESIT-DSI-1920/p4-t2-networking-alu0100658705#readme",
+  "dependencies": {
+    "file-system": "^2.2.2",
+    "fs": "0.0.1-security"
+  }
+}
