@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/assets/css/style.css?v=">
+
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Listening for Socket Connections | Desarollo de Sistemas Informáticos</title>
+<meta name="generator" content="Jekyll v3.8.6" />
+<meta property="og:title" content="Listening for Socket Connections" />
+<meta name="author" content="Pablo Bethencourt Díaz" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Contenido del Tema 3: Networking with Sockets y ejercicios del libro “Noje.js 8 the Roght Way”." />
+<meta property="og:description" content="Contenido del Tema 3: Networking with Sockets y ejercicios del libro “Noje.js 8 the Roght Way”." />
+<link rel="canonical" href="http://localhost:4000/Listening-Socket-Connections.html" />
+<meta property="og:url" content="http://localhost:4000/Listening-Socket-Connections.html" />
+<meta property="og:site_name" content="Desarollo de Sistemas Informáticos" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-03-15T13:39:18+00:00" />
+<script type="application/ld+json">
+{"datePublished":"2020-03-15T13:39:18+00:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/Listening-Socket-Connections.html"},"url":"http://localhost:4000/Listening-Socket-Connections.html","author":{"@type":"Person","name":"Pablo Bethencourt Díaz"},"headline":"Listening for Socket Connections","description":"Contenido del Tema 3: Networking with Sockets y ejercicios del libro “Noje.js 8 the Roght Way”.","dateModified":"2020-03-15T13:39:18+00:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+  </head>
+
+  <body>
+
+    <header>
+      <div class="container">
+        <h1>Desarollo de Sistemas Informáticos</h1>
+        <h2>Contenido del Tema 3: Networking with Sockets y ejercicios del libro "Noje.js 8 the Roght Way".</h2>
+
+        <section id="downloads">
+          
+          <a href="" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+        </section>
+      </div>
+    </header>
+
+    <div class="container">
+      <section id="main_content">
+        <h3 id="listening-for-socket-connections">Listening for Socket Connections</h3>
+
+<p>Los servicios de red tienen dos funciones principales: Connectar puntos finales (endpoints) y transmitir información entre ellos. En este apartado veremos como crear servicios basados en sockets utilizando <em>Node</em>.</p>
+
+<p><strong>Binding a Server to a TCP Port</strong></p>
+
+<p>Las conexiones de socket TCP constan de dos puntos finales; uno se une a un puerto numerado mientras que el otro se conecta a un puerto. En <em>Node.js</em> las operaciones de enlace y conexión son proporcionadas por el módulo de red (net module). La forma de enlazar un puerto TCP para escuchar conexiones es la siguiente:</p>
+
+<p><img src="../../../../images/cap01.png" alt="imagen01" /></p>
+
+<p>Donde:</p>
+
+<ul>
+  <li>El método <strong>net.createServer</strong> toma una función <em>callback</em> y devuelve un objeto <em>Servidor</em>. <em>Node.js</em> invocará la <em>callback</em> cada cada vez que se conecte otro punto final (endpoint).</li>
+  <li>El parámetro de conexión será un objeto <em>Socket</em> que se puede usar para enviar o recibir datos.</li>
+  <li>Llamar a <strong>server.listen</strong> vincula el puerto especificado.</li>
+</ul>
+
+<p>La siguiente figura nos muestra un ejemplo del funcionamiento, donde existe un proceso <em>Node.js</em> enlazado a un puerto TCP y donde cualquier número de clientes pueden conectarse al puerto enlazado.</p>
+
+<p><img src="../../../../images/cap02.png" alt="imagen02" /></p>
+
+<p><strong>Writing Data to a Socket</strong></p>
+
+<p>Como fuente de información para el servicio de red que crearemos a continuación, utilizaremos los cambios producidos en un archivo a partir de las utilidades desarrolladas en prácticas anteriores.</p>
+
+<p>Primero crearemos un directorio <em>networking</em> para almacenar el código que vamos a escribir. Después creamos el siguiente archivo:</p>
+
+<p><img src="../../../../images/cap03.png" alt="imagen03" /></p>
+
+<p>En el archivo se observa que:</p>
+
+<ul>
+  <li>En la parte superior se extraen los módulos <em>fs</em> y <em>net</em>.</li>
+  <li>El nombre del archivo se procesa como un argumento en la línea de comandos. En caso de que no se haya especificado un nombre de archivo, se lanza un error.</li>
+  <li>La función <em>callback createServer</em> hace tres cosas:
+    <ol>
+      <li>Informa que se ha establecido la conexión (tanto para el cliente con <em>connection.write</em> como para la consola).</li>
+      <li>Empieza a escuchar por cambios en el fichero objetivo, guardando el objeto <em>watcher</em> devuelto. Esta <em>callback</em> envia información con los cambios al cliente mediante <em>connection.write</em>.</li>
+      <li>Vigila el evento de conexión <em>close</em> para dejar de controlar los cambios en el fichero con <em>watcher.close</em>.</li>
+    </ol>
+  </li>
+</ul>
+
+<p>Por último la <em>callback</em> se transmite a <em>serven.listen</em> al final. <em>Node.js</em> invoca esta función después de que haya enlazado el puerto 60300 con éxito y esté listo para recibir conexiones.</p>
+
+<p><strong>Connecting to a TCP Socket Server with Netcat</strong></p>
+
+<p>A continuación comprobamos la ejecución del programa <em>net-watcher</em>. Trabajamos con tres terminales distintas:</p>
+
+<ul>
+  <li>En la primera terminal utilizaremos el comando <em>watch</em> para realizar un <em>touch</em> sobre el fichero <em>target.txt</em> en intervalos de 1 segundo:</li>
+</ul>
+
+<p><code>watch -n 1 touch target.txt</code></p>
+
+<p><img src="../../../../images/cap04.png" alt="imagen04" /></p>
+
+<ul>
+  <li>En la segunda terminal ejecutamos el programa con el fichero, creando un servicio que escucha en el puerto 60300:</li>
+</ul>
+
+<p><img src="../../../../images/cap05.png" alt="imagen05" /></p>
+
+<ul>
+  <li>Para conectar con el servicio hacemos uso de <em>netcat</em>:</li>
+</ul>
+
+<p><img src="../../../../images/cap06.png" alt="imagen06" /></p>
+
+<ul>
+  <li>En la terminal que corre el servicio podremos apreciar que un usuario se ha conectado:</li>
+</ul>
+
+<p><img src="../../../../images/cap07.png" alt="imagen07" /></p>
+
+<p>Veamos la configuración creada en el siguiente diagrama, donde el proceso de <em>net-watcher</em> enlaza un puerto TCP y observa un archivo. En este caso es posible que varios usuarios se conecten y reciban actualizaciones simultaneas:</p>
+
+<p><img src="../../../../images/cap08.png" alt="imagen08" /></p>
+
+<p><em>Listening to Unix Sockets</em></p>
+
+<p>Los <em>sockets</em> de Unix son una alternativa más eficiente si se quiere comunicar procesos en un mismo equipo. Pueden ser más rápidos que los sockets TCP porque no requieren invocar hardware de red.
+Para ver cómo el módulo <em>net</em> usa este tipo de sockets, modificamos el programa cambiando el <em>.listen</em> de la siguiente forma:</p>
+
+<p><img src="../../../../images/cap09.png" alt="imagen09" /></p>
+
+<p>Volvemos a ejecutar el programa y para connectar el cliente utilizaremos de nuevo <em>nc</em> pero con la opción -U para usar el archivo socket.</p>
+
+<p><img src="../../../../images/cap10.png" alt="imagen10" /></p>
+
+      </section>
+    </div>
+
+    
+  </body>
+</html>

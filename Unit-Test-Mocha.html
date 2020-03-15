@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/assets/css/style.css?v=">
+
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Unit Test Mocha | Desarollo de Sistemas Informáticos</title>
+<meta name="generator" content="Jekyll v3.8.6" />
+<meta property="og:title" content="Unit Test Mocha" />
+<meta name="author" content="Pablo Bethencourt Díaz" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Contenido del Tema 3: Networking with Sockets y ejercicios del libro “Noje.js 8 the Roght Way”." />
+<meta property="og:description" content="Contenido del Tema 3: Networking with Sockets y ejercicios del libro “Noje.js 8 the Roght Way”." />
+<link rel="canonical" href="http://localhost:4000/Unit-Test-Mocha.html" />
+<meta property="og:url" content="http://localhost:4000/Unit-Test-Mocha.html" />
+<meta property="og:site_name" content="Desarollo de Sistemas Informáticos" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-03-15T13:39:18+00:00" />
+<script type="application/ld+json">
+{"datePublished":"2020-03-15T13:39:18+00:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/Unit-Test-Mocha.html"},"url":"http://localhost:4000/Unit-Test-Mocha.html","author":{"@type":"Person","name":"Pablo Bethencourt Díaz"},"headline":"Unit Test Mocha","description":"Contenido del Tema 3: Networking with Sockets y ejercicios del libro “Noje.js 8 the Roght Way”.","dateModified":"2020-03-15T13:39:18+00:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+  </head>
+
+  <body>
+
+    <header>
+      <div class="container">
+        <h1>Desarollo de Sistemas Informáticos</h1>
+        <h2>Contenido del Tema 3: Networking with Sockets y ejercicios del libro "Noje.js 8 the Roght Way".</h2>
+
+        <section id="downloads">
+          
+          <a href="" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+        </section>
+      </div>
+    </header>
+
+    <div class="container">
+      <section id="main_content">
+        <h3 id="developing-unit-tests-with-mocha">Developing Unit Tests with Mocha</h3>
+
+<p><em>Mocha</em> es un framework multiparadigma para Node.js que cuenta con varios estilos diferentes para describir las pruebas. En este caso se utilizará <em>BBD</em> (behavior-driven-development).</p>
+
+<p><strong>Installing Mocha with npm</strong></p>
+
+<p>Comenzamos instalando la herramienta con :</p>
+
+<pre><code> ​​npm​​ ​​install​​ ​​--save-dev​​ ​​--save-exact​​ ​​mocha@3.4.2 </code></pre>
+
+<p><img src="images/cap24.png" alt="imagen24" /></p>
+
+<p>Comprobamos que se ha añadido Mocha y sus dependencias al proyecto:</p>
+
+<p><img src="images/cap25.png" alt="imagen25" /></p>
+
+<p><strong>Writing Mocha Unit Test</strong></p>
+
+<p>Creamos nuestra primera prueba unitaria, para ello creamos un directorio llamado <em>test</em> para guardar el código relacionado con las pruebas y añadimos un fichero <em>ldj-client-test</em> con el siguiente código:</p>
+
+<p><img src="images/cap26.png" alt="imagen26" /></p>
+
+<p>En primer lugar obtenemos los modulos que van a utilizarse, como <em>assert</em>, que contiene funciones para comparar valores.</p>
+
+<p>Luego se usa el método <em>describe</em> de Mocha para crear un contexto con nombre para las pruebas que involucren a <em>LDJClient</em>, el segundo argumento de <em>describe</em> es una función que contiene el contenido de la prueba.</p>
+
+<p>Dentro de la prueba se declaran dos variables: una para la instancia de <em>LDJClient</em>, <em>client</em>, y otra para el <em>EvenEmitter</em> subyacente, <em>stream</em>. Antes en <em>beforeEach</em> se declaran nuevas instancias a cada uno de estas variables. Finalmente se llama a <em>it</em> para comprobar un comportamiento específico de la clase.</p>
+
+<p>En el cuerpo de la prueba configuramos un controlador de eventos de mensajes en el cliente. El controlador utiliza el método <em>deepEqual</em> para comprobar que la carga que recibimos coincide con nuestras expectativas.</p>
+
+<p><strong>Running Mocha Tests From Npm</strong></p>
+
+<p>Para ejecutar las pruebas de Mocha con <em>nmp</em>, tenemos quemodificar el fichero <em>package.json</em>:</p>
+
+<p><img src="images/cap27.png" alt="imagen27" /></p>
+
+<p>Ahora solo tendremos que ejecutar en la terminal <code>npm test</code>, si queremos realizar una prueba <em>Mocha</em>, podemos añadir la línea <code>process.nextTick(() =&gt; stream.emit('data', '"bar"}\n'));</code>. Veamos su ejecución:</p>
+
+<p><img src="images/cap28.png" alt="imagen28" /></p>
+
+      </section>
+    </div>
+
+    
+  </body>
+</html>

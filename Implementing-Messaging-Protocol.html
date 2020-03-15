@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/assets/css/style.css?v=">
+
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Implementing a Messaging Protocol | Desarollo de Sistemas Informáticos</title>
+<meta name="generator" content="Jekyll v3.8.6" />
+<meta property="og:title" content="Implementing a Messaging Protocol" />
+<meta name="author" content="Pablo Bethencourt Díaz" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Contenido del Tema 3: Networking with Sockets y ejercicios del libro “Noje.js 8 the Roght Way”." />
+<meta property="og:description" content="Contenido del Tema 3: Networking with Sockets y ejercicios del libro “Noje.js 8 the Roght Way”." />
+<link rel="canonical" href="http://localhost:4000/Implementing-Messaging-Protocol.html" />
+<meta property="og:url" content="http://localhost:4000/Implementing-Messaging-Protocol.html" />
+<meta property="og:site_name" content="Desarollo de Sistemas Informáticos" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-03-15T13:39:18+00:00" />
+<script type="application/ld+json">
+{"datePublished":"2020-03-15T13:39:18+00:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/Implementing-Messaging-Protocol.html"},"url":"http://localhost:4000/Implementing-Messaging-Protocol.html","author":{"@type":"Person","name":"Pablo Bethencourt Díaz"},"headline":"Implementing a Messaging Protocol","description":"Contenido del Tema 3: Networking with Sockets y ejercicios del libro “Noje.js 8 the Roght Way”.","dateModified":"2020-03-15T13:39:18+00:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+  </head>
+
+  <body>
+
+    <header>
+      <div class="container">
+        <h1>Desarollo de Sistemas Informáticos</h1>
+        <h2>Contenido del Tema 3: Networking with Sockets y ejercicios del libro "Noje.js 8 the Roght Way".</h2>
+
+        <section id="downloads">
+          
+          <a href="" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+        </section>
+      </div>
+    </header>
+
+    <div class="container">
+      <section id="main_content">
+        <h3 id="implementing-a-messaging-protocol">Implementing a Messaging Protocol</h3>
+
+<p>Un <strong>protocolo</strong> se puede entender como un conjunto de reglas que define como se comunican los puntos finales en un sistema. En este apartado crearemos un protocolo basado en pasar mensajes <em>JSON</em> a través de TCP.</p>
+
+<p><strong>Serializing messages with JSON</strong></p>
+
+<p>Cada mensaje es un objeto JSON que es un hash de pares clave-valor, por ejemplo:</p>
+
+<pre><code>{ "Key" : "value", "anotherKey" : "anotherValue" }</code></pre>
+
+<p>El programa <em>net-watcher</em> desarrollado en el apartado anterior envía dos tipos de mensaje que tenemos que convertir a JSON:</p>
+<ol>
+  <li>Cuando la conección se establece, el cliente recibe el mensaje “No watching <em>target.txt</em> for changes…”</li>
+  <li>Cuando se producen cambios en el fichero, el cliente recibe otro mensaje donde se muestra la notificación y la fecha del cambio.</li>
+</ol>
+
+<p>No hay saltos de línea en nuestros mensajes JSON, nuestro protocolo usará nuevas líneas solo para separar los mensajes. Este protocolo se conoce como <em>line-delimited JSON</em> (LDJ).</p>
+
+<p>Codificaremos el primer mensaje de esta forma, donde <em>type</em> indica el tipo de mensaje, y <em>file</em> hace referencia al fichero que se está controlando:</p>
+
+<p><img src="../../../../images/cap11.png" alt="imagen11" /></p>
+
+<p>En el segundo mensaje, <em>type</em> anunciará que el archivo ha sufrido cambios, y el campo <em>timestamp</em> contiene un valor entero que representa el número de milisegundos desde la medianoche del 1 de enero de 1970. Modificamos este mensaje:</p>
+
+<p><img src="../../../../images/cap12.png" alt="imagen12" /></p>
+
+<p>Ejecutamos el programa y observamos los cambios:</p>
+
+<p><img src="../../../../images/cap13.png" alt="imagen13" /></p>
+
+      </section>
+    </div>
+
+    
+  </body>
+</html>
