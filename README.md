@@ -107,7 +107,7 @@ Un **protocolo** se puede entender como un conjunto de reglas que define como se
 
 Cada mensaje es un objeto JSON que es un hash de pares clave-valor, por ejemplo:
 
-<pre><code>{ "Key" : "value", "anotherKey" : "anotherValue" }</pre></code>
+<pre><code>{ "Key" : "value", "anotherKey" : "anotherValue" }</code></pre>
 
 El programa *net-watcher* desarrollado en el apartado anterior envía dos tipos de mensaje que tenemos que convertir a JSON:
 1. Cuando la conección se establece, el cliente recibe el mensaje "No watching *target.txt* for changes..."
@@ -252,7 +252,6 @@ Comprobamos que se soluciona el problema de los mensajes fragmentados:
 ![imagen23](images/cap23.png)
 
 
-
 ### Developing Unit Tests with Mocha
 
 *Mocha* es un framework multiparadigma para Node.js que cuenta con varios estilos diferentes para describir las pruebas. En este caso se utilizará *BBD* (behavior-driven-development).
@@ -262,7 +261,7 @@ Comprobamos que se soluciona el problema de los mensajes fragmentados:
 
 Comenzamos instalando la herramienta con :
 
-<pre><code> ​​npm​​ ​​install​​ ​​--save-dev​​ ​​--save-exact​​ ​​mocha@3.4.2 </pre></code>
+<pre><code> ​​npm​​ ​​install​​ ​​--save-dev​​ ​​--save-exact​​ ​​mocha@3.4.2 </code></pre>
 
 ![imagen24](images/cap24.png)
 
@@ -298,3 +297,44 @@ Ahora solo tendremos que ejecutar en la terminal <code>npm test</code>, si quere
 
 
 ### Ejercicios
+
+**Testability exercises**
+
+1. Add a unit test for a single message that is split over two or more data evetns from the stream:
+    - El primer test ha sido ya implementado durante los ejemplos del capítulo:
+
+    ![imagen30](images/cap30.png)
+
+2. Add a unit test that passes in null to the LDJClient constructor, and asserts that an error is thrown. Then make the test pass by modifying the constructor to accept null: the semantic being that the created stream behaves as /dev/null in Unix.
+
+    ![imagen31](images/cap31.png)
+
+Comprobamos el correcto funcionamiento:
+
+![imagen32](images/cap32.png)
+
+**Robustness exercises**
+
+1. The LDJClient already handles the case in which a properly formatted JSON string is split over multiply lines. What happen if the incoming data is not a properly formatted JSON string?
+
+    - Lanzará una excepción:
+
+    ![imagen33](images/cap33.png)
+
+2. What happens if the last data event completes a a JSON message, but without the trailing new line?
+ 
+El funcionamiento sería correcto, no añadería el salto de línea, pero no fallaría.
+
+## Jekyll
+
+**Instalación** 
+
+Una vez instalados los pre-requisitos, se ejecuta el comando <code>gem install jekyll bundler</code> para instalar *Jekyll* y <code>jekyll new p4-t2_blog</code> para crear el sitio. Vemos la estructura de directorios creada:
+
+![imagen29](images/cap29.png)
+
+Añadimos los distintos componentes y el tema personalizado. Para añadir un nuevo tema, debemos añadirlo al *Gemfile* <code>gem "jekyll-theme-hacker"</code>, ejecutar <code>bundle install</code> para instalar la nueva gema, cambiar el *theme* en el *_config.yml* y ejecutar <code>bundle exec jekyll serve</code> para confirmar los cambios. Un ejemplo de como se ve: 
+
+![imagen34](images/cap34.png)
+
+La url del despliegue en GitHub Pages es:
