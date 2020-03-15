@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/p4-t2-networking-alu0100658705/assets/css/style.css?v=">
+
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Extending Core Classes in Custom Modules | Desarollo de Sistemas Informáticos</title>
+<meta name="generator" content="Jekyll v3.8.6" />
+<meta property="og:title" content="Extending Core Classes in Custom Modules" />
+<meta name="author" content="Pablo Bethencourt Díaz" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Contenido del Tema 3: Networking with Sockets y ejercicios del libro “Noje.js 8 the Roght Way”." />
+<meta property="og:description" content="Contenido del Tema 3: Networking with Sockets y ejercicios del libro “Noje.js 8 the Roght Way”." />
+<link rel="canonical" href="http://localhost:4000/p4-t2-networking-alu0100658705/Extending-Core-Classes.html" />
+<meta property="og:url" content="http://localhost:4000/p4-t2-networking-alu0100658705/Extending-Core-Classes.html" />
+<meta property="og:site_name" content="Desarollo de Sistemas Informáticos" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-03-15T13:39:18+00:00" />
+<script type="application/ld+json">
+{"datePublished":"2020-03-15T13:39:18+00:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/p4-t2-networking-alu0100658705/Extending-Core-Classes.html"},"url":"http://localhost:4000/p4-t2-networking-alu0100658705/Extending-Core-Classes.html","author":{"@type":"Person","name":"Pablo Bethencourt Díaz"},"headline":"Extending Core Classes in Custom Modules","description":"Contenido del Tema 3: Networking with Sockets y ejercicios del libro “Noje.js 8 the Roght Way”.","dateModified":"2020-03-15T13:39:18+00:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+  </head>
+
+  <body>
+
+    <header>
+      <div class="container">
+        <h1>Desarollo de Sistemas Informáticos</h1>
+        <h2>Contenido del Tema 3: Networking with Sockets y ejercicios del libro "Noje.js 8 the Roght Way".</h2>
+
+        <section id="downloads">
+          
+          <a href="" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+        </section>
+      </div>
+    </header>
+
+    <div class="container">
+      <section id="main_content">
+        <h3 id="extending-core-classes-in-custom-modules">Extending Core Classes in Custom Modules</h3>
+
+<p>En el apartado anterior un fallo en nuestro programa cliente: no almacena sus entradas en el búfer. Cualquier mensaje que llegue como múltiples eventos de datos lo bloqueará.</p>
+
+<p>Así será necesario que el programa cliente almacene los datos entrantes en los mensajes y maneje cada mensaje cuando llegue. Para ello crearemos un módulo que maneje el buffer de entrada para que el programa principal pueda obtener mensajes completos de manera confiable.</p>
+
+<p><strong>Extending EventEmitter</strong></p>
+
+<p>Implementamos un módulo para el programa cliente de almacenamiento en búfer LDJ.</p>
+
+<ol>
+  <li><strong>Inheritance in Node</strong>:</li>
+</ol>
+
+<p>Veamos como funciona la herencia en Node.js; El siguiente código configura DHClient para heredar de EventEmitter:</p>
+
+<p><img src="images/cap19.png" alt="imagen19" /></p>
+
+<ul>
+  <li>
+    <p><em>LDJClient</em> es una clase, lo que implica que se debe llamar a <em>new LDJClient(stream)</em> para obtener una instancia. El parametro <em>stream</em> es un objeto que envía enventos de datos.</p>
+  </li>
+  <li>
+    <p>Dentro del constructor se llama a <em>super</em> para invocar al constructor de <em>EventEmitter</em>.</p>
+  </li>
+  <li>
+    <p>El código para usar <em>LDJClient</em> podría ser el siguiente:</p>
+  </li>
+</ul>
+<pre><code> const client = new LDJClient(networkStream);
+client.on('meagge',mesagge =&gt; {
+    // Tomar acciones para el mensaje
+}) </code></pre>
+
+<p>Una vez establecida la jerarquía de clases debemos implimentar el envío de eventos de mensaje.</p>
+
+<ol>
+  <li><strong>Buffering Data Events</strong>: El objetivo es utilizar el parámetro <em>stream</em> para recuper y almacenar en el buffer la entrada. El objetivo es tomar los datos entrantes sin procesar y convertirlos en eventos de mensaje que contengan los objetos de mensaje completo:</li>
+</ol>
+
+<p><img src="images/cap20.png" alt="imagen20" /></p>
+
+<ul>
+  <li>
+    <p>El código agrega fragmentos del mensaje a una cadena buffer y busca terminaciones de línea (que corresponderían con los límites de mensajes JSON).</p>
+  </li>
+  <li>
+    <p>Comenzamos llamando a <em>super</em> y configuramos una variable string llamada <em>buffer</em> que capture los datos entrantes.</p>
+  </li>
+  <li>
+    <p>Luego utilizamos <em>steam.on</em> para controlar los eventos de datos; primero se agregan los datos sin procesar al final del buffer y luego se buscan los mensajes completos desde el frente.</p>
+  </li>
+  <li>
+    <p>Cada cadena del mensaje se envía a través de <em>JSON.parse</em> para que finalmente sea emitido por <em>LDJClient</em> como un evento de mensaje via <em>this.emit</em>.</p>
+  </li>
+</ul>
+
+<p>Con esto quedaría resuleto el manejo de mensajes.</p>
+
+<ol>
+  <li><strong>Exporting Functionality in a Module</strong>: Ahora añadiremos la clase implementada dentro de un módulo.</li>
+</ol>
+
+<ul>
+  <li>
+    <p>En primer lugar ya tenemos creado el directorio <em>lib</em>, donde por convención se almacenan los modulos.</p>
+  </li>
+  <li>
+    <p>El contenido del módulo es el siguiente:</p>
+  </li>
+</ul>
+
+<p><img src="images/cap21.png" alt="imagen21" /></p>
+
+<p>Trás el código desarrollado previamente, añadimos un método estático llamado <em>connect</em>, este método estático se adjunta a la clase LDJClient en lugar de aplicarse a instancias individuales.</p>
+
+<p>En un módulo Node.js, el objeto <em>module.exports</em> funciona como puente entre el código del módulo y el resto de elementos. El código para usar el módulo LDJ se verá así:</p>
+
+<pre><code> const​ LDJClient = require(​'./lib/ldj-client.js'​);​ 
+​const​ client = ​new​ LDJClient(networkStream);&lt;/pre&gt;</code>
+
+Si se usa el método *connect*:
+
+<pre><code> ​const​ client = require(​'./lib/ldj-client.js'​).connect(networkStream); </code></pre>
+
+En ambos casos es necesario especificar la ruta completa.
+
+**Importing a Custom Node.js Module**
+
+Para utilizar el módulo implementado definimos el programa cliente:
+
+![imagen22](images/cap22.png)
+
+Comprobamos que se soluciona el problema de los mensajes fragmentados:
+
+![imagen23](images/cap23.png)
+</pre>
+
+      </section>
+    </div>
+
+    
+  </body>
+</html>
