@@ -336,5 +336,3 @@ Una vez instalados los pre-requisitos, se ejecuta el comando <code>gem install j
 Añadimos los distintos componentes y el tema personalizado. Para añadir un nuevo tema, debemos añadirlo al *Gemfile* <code>gem "jekyll-theme-hacker"</code>, ejecutar <code>bundle install</code> para instalar la nueva gema, cambiar el *theme* en el *_config.yml* y ejecutar <code>bundle exec jekyll serve</code> para confirmar los cambios. Un ejemplo de como se ve: 
 
 ![imagen34](images/cap34.png)
-
-La url del despliegue en GitHub Pages es:
